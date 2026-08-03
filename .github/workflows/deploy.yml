@@ -1,0 +1,27 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  aws-auth-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::596234624782:role/GitHubActionsRole
+          aws-region: us-east-1
+
+      - name: Verify AWS Identity
+        run: aws sts get-caller-identity
