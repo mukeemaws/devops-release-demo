@@ -8,4 +8,10 @@ app.get("/", (req, res) => {
     });
 });
 
+app.get("/health", (req, res) => {
+    res.status(200).json({
+        status: "UP"
+    });
+});
+
 module.exports = app;
