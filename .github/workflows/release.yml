@@ -35,3 +35,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx semantic-release
+
+      - name: Slack Notification
+        if: success()
+        run: |
+          curl -X POST ${{ secrets.SLACK_WEBHOOK_URL }} \
+            -H 'Content-type: application/json' \
+            --data '{
+              "text":"🚀 Deployment Successful\nRepository: ${{ github.repository }}\nVersion: ${{ github.ref_name }}\nCommit: ${{ github.sha }}\nActor: ${{ github.actor }}"
+            }'
