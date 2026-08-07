@@ -37,6 +37,9 @@ jobs:
           REPO: ${{ github.repository }}
           BRANCH: ${{ github.ref_name }}
         run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data "{\"text\":\"🚀 *Deployment Status:* $STATUS | *Repo:* $REPO | *Branch:* $BRANCH\"}" \
-          "$SLACK_WEBHOOK_URL"
+          cat <<JSON > payload.json
+          {
+            "text": "🚀 *Deployment Status:* ${STATUS}\n*Repository:* ${REPO}\n*Branch:* ${BRANCH}"
+          }
+          JSON
+          curl --fail -X POST -H 'Content-type: application/json' --data @payload.json "$SLACK_WEBHOOK_URL"
